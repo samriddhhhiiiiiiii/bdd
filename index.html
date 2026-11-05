@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255,117,140,0.5); }
+            to { text-shadow: 0 0 20px rgba(255,126,179,0.8); }
+        }
+
+        p {
+            color: #ddd;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Gift Box Styles */
+        .gift-box {
+            font-size: 4rem;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+
+        .gift-box:active {
+            transform: scale(0.9);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hidden Message Card */
+        .secret-message {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #ff758c;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating background elements */
+        .floating-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -50px;
+            font-size: 1.5rem;
+            animation: floatUp 5s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
+            transition: opacity 0.2s;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Floating Emojis -->
+    <div class="floating-bg" id="bgParticles"></div>
+
+    <div class="container">
+        <h1>Happy Birthday! </h1>
+        <p>You're officially leveling up today. Tap the gift box below to unlock your special message! 👇</p>
+        
+        <!-- Interactive Gift -->
+        <div class="gift-box" id="giftBtn" onclick="openGift()">🎁</div>
+
+        <!-- Secret Message (Revealed on click) -->
+        <div class="secret-message" id="secretMsg">
+            <h2>🎉 Surprise! 🎈</h2>
+            <p>Wishing you a year filled with endless laughter, success, and amazing adventures. Thank you for being such an awesome human being! Keep shining! ✨</p>
+        </div>
+
+        <button class="btn" onclick="triggerConfetti()">Send More Confetti 🎉</button>
+    </div>
+
+    <script>
+        // Function to open the gift box
+        function openGift() {
+            const gift = document.getElementById('giftBtn');
+            const msg = document.getElementById('secretMsg');
+            
+            gift.innerHTML = "open!";
+            msg.style.display = "block";
+            gift.style.animation = "none";
+            
+            // Create extra burst particles
+            for(let i=0; i<15; i++) {
+                createParticle();
+            }
+        }
+
+        // Function to dynamically create floating background elements
+        function createParticle() {
+            const container = document.getElementById('bgParticles');
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const emojis = ['🎈', '🎉', '⭐', '🎂', '💖', '🎁'];
+            particle.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            particle.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+            
+            container.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
+        }
+
+        // Automatically spawn background particles
+        setInterval(createParticle, 400);
+
+        function triggerConfetti() {
+            for(let i=0; i<25; i++) {
+                createParticle();
+            }
+        }
+    </script>
+</body>
+</html>
